@@ -83,4 +83,4 @@ The revised `clt_project_1_student_guidance.qmd` supersedes the original Class 0
 
 Course sources: Greg Labmeier, *CLT Project 1: What I Am Looking For* (revised guidance), and *Project 1: How Fast Does Normal Happen?* (original Class 06 instructions), both supplied with the assignment. The Canvas screenshot lists a GitHub URL submission due October 5 at 18:00.
 
-This folder is prepared for a GitHub repository; it has not been published or submitted. Upload the complete project contents, then submit the repository URL through Canvas. Review the analysis and code before submission, and append any actual additional AI interactions to the log.
+This project is published at [github.com/bennygorgor/clt-project-submission](https://github.com/bennygorgor/clt-project-submission). Submit that repository URL through Canvas. Review the analysis and code before submission, and append any material additional AI interactions to the log.
