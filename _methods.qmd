@@ -1,0 +1,36 @@
+## Experimental design and decision rule
+
+Each experiment uses **30,000 independent samples**, with **n observations in each sample**. Each sample contributes one mean. Thus, increasing n changes the sampling distribution; increasing the number of repetitions B improves the precision with which that distribution is estimated. The seed is reset to **5533 immediately before each experiment**. Reusing a seed makes configurations reproducible, but results across different n are not claimed to be independent.
+
+For each finite-variance population, the initial grid is **1, 2, 3, 5, 10, 20, 30, 50, 75, 100, 150, 200**. After finding the first passing coarse value, the program fills in every integer from 1 through that value plus 4. It extends the integer search if needed. The Cauchy experiment instead uses **1, 2, 5, 10, 30, 100, 300, 1000**, because finite-variance thresholds do not apply.
+
+The working definition of “normal enough” was specified before running the simulations:
+
+| Numerical diagnostic | Required value | Purpose |
+|---|---:|---|
+| Absolute moment skewness | ≤ 0.30 | Limit asymmetry |
+| Absolute excess kurtosis | ≤ 0.50 | Limit differences in tail weight and peakedness |
+| Maximum empirical CDF distance from the theoretical normal | ≤ 0.05 | Limit overall distributional discrepancy |
+| Relative error in empirical standard error | ≤ 0.05 | Check agreement with the CLT scale |
+
+Skewness uses $m_3/m_2^{3/2}$ and excess kurtosis uses $m_4/m_2^2-3$, where $m_k=B^{-1}\sum_{b=1}^B(\bar X_b-\overline{\bar X})^k$. These are moment estimates without small-sample bias correction. **The reported kurtosis is excess kurtosis: a normal distribution has value 0, not 3.**
+
+For a population with finite mean and variance, set $Z_b=(\bar X_b-\mu)/(\sigma/\sqrt n)$. The CDF diagnostic is $D=\sup_z|\widehat F_B(z)-\Phi(z)|$, computed on both sides of every empirical jump. It uses the known population parameters, not a normal fitted to the simulated means. It is a descriptive error tolerance, **not a p-value**. No continuity correction is used for discrete populations, so this criterion deliberately counts discreteness as part of the approximation error.
+
+The selected candidate is the **smallest tested integer beginning five consecutive passing values** (n through n+4). Histograms and full normal Q–Q plots are then inspected to assess whether the candidate is useful for the central shape and ordinary probabilities. Small tail departures are allowed; accurate extreme-tail probabilities are not promised. The five-value rule reduces dependence on one favorable estimate, but cannot remove Monte Carlo error or guarantee monotone improvement.
+
+The tolerances are transparent working choices, not instructor-prescribed thresholds or universal constants. A stricter tail criterion could select larger n. No criterion based on a finite variance is applied to Cauchy data.
+
+## Reusable simulation code
+
+```{r}
+# The full implementation is in R/simulation.R.
+# This small example is equivalent to the matrix implementation used for speed.
+set.seed(5533)
+example_n <- 5L
+example_B <- 10L
+example_means <- replicate(example_B, mean(populations[[key]]$draw(example_n)))
+example_means
+```
+
+The production function generates samples in batches of 1,000 rows, then calls `rowMeans()`. Batching avoids retaining a very large matrix. The same `simulate_means()` and `diagnose()` functions are used for every population. Diagnostics for every tested n are retained in the CSV files and RDS object. Raw sample means are retained at selected comparison sizes; all others can be regenerated from the seed and code.

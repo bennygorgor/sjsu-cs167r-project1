@@ -1,0 +1,14 @@
+.quarto/
+.DS_Store
+.Rhistory
+.RData
+.Rproj.user/
+AI_USAGE.html
+*.knit.md
+*.utf8.md
+*.log
+
+/.quarto/
+**/*.quarto_ipynb
+/reports/index.qmd
+/reports/analyses/*.qmd

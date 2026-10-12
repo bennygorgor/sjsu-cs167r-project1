@@ -1,0 +1,51 @@
+PASS: normal matrix sample means agree with replicate()
+PASS: normal recorded B and seed are correct
+PASS: normal n=30 reproduces the saved run exactly
+PASS: normal selected n follows the five-consecutive-pass rule
+PASS: normal simulated means agree with theory within 6 Monte Carlo SEs
+PASS: normal empirical SE agrees with theory within 4% across tested n
+PASS: die matrix sample means agree with replicate()
+PASS: die recorded B and seed are correct
+PASS: die n=30 reproduces the saved run exactly
+PASS: die selected n follows the five-consecutive-pass rule
+PASS: die simulated means agree with theory within 6 Monte Carlo SEs
+PASS: die empirical SE agrees with theory within 4% across tested n
+PASS: exponential matrix sample means agree with replicate()
+PASS: exponential recorded B and seed are correct
+PASS: exponential n=30 reproduces the saved run exactly
+PASS: exponential selected n follows the five-consecutive-pass rule
+PASS: exponential simulated means agree with theory within 6 Monte Carlo SEs
+PASS: exponential empirical SE agrees with theory within 4% across tested n
+PASS: binomial matrix sample means agree with replicate()
+PASS: binomial recorded B and seed are correct
+PASS: binomial n=30 reproduces the saved run exactly
+PASS: binomial selected n follows the five-consecutive-pass rule
+PASS: binomial simulated means agree with theory within 6 Monte Carlo SEs
+PASS: binomial empirical SE agrees with theory within 4% across tested n
+PASS: cauchy matrix sample means agree with replicate()
+PASS: cauchy recorded B and seed are correct
+PASS: cauchy n=30 reproduces the saved run exactly
+PASS: Cauchy: undefined theoretical SE is never treated as a finite-variance case
+PASS: Cauchy sample-mean IQR stays near its exact value 2
+PASS: CDF distance handles ties and both sides of each jump
+PASS: alternate-seed experiment uses 5534 and the same selection rule
+
+R version 4.6.1 (2026-06-24)
+Platform: aarch64-apple-darwin23
+Running under: macOS Sequoia 15.2
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.6/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.6/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.1
+
+locale:
+[1] C.UTF-8/C/C.UTF-8/C/C.UTF-8/C.UTF-8
+
+time zone: America/Los_Angeles
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+[1] compiler_4.6.1

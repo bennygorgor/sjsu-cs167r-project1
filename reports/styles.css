@@ -1,0 +1,10 @@
+:root { --ink: #20324a; --accent: #28758b; }
+body { color: var(--ink); font-size: 17px; line-height: 1.65; }
+h1, h2, h3 { color: var(--ink); }
+.quarto-title-block { border-bottom: 3px solid var(--accent); padding-bottom: 1.2rem; margin-bottom: 2rem; }
+.subtitle { color: var(--accent); }
+table { font-size: 0.87rem; }
+thead { border-bottom: 2px solid var(--accent); }
+figcaption { color: #546478; }
+pre { font-size: 0.85rem; }
+a { color: #166a86; }

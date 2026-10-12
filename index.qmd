@@ -1,0 +1,104 @@
+---
+title: "How Fast Does Normal Happen?"
+subtitle: "Five populations, 30,000 repetitions per experiment, and a test of the n = 30 rule"
+---
+
+```{r}
+#| include: false
+source("R/report_helpers.R")
+```
+
+## Executive summary
+
+This investigation uses R Monte Carlo simulations to examine **the sampling distribution of the sample mean**, rather than whether the original population becomes normal. Under the declared approximation criteria and primary seed 5533, the selected sample sizes are **1 for the normal population, 6 for the die, 51 for the exponential population, and 63 for Binomial(5, 0.10)**. **No n works for the standard Cauchy mean.**
+
+These are empirical, criterion-dependent selections, not universal mathematical cutoffs. In particular, the alternate-seed exponential run selects 39 instead of 51. The robust conclusion is that the population's shape, discreteness, tail behavior, and the accuracy one needs all matter; **30 is not a universal threshold**.
+
+## Scope and source precedence
+
+The revised *CLT Project 1: What I Am Looking For* guidance supersedes the original Class 06 project instructions wherever they differ. This report covers the five retained populations. Continuous uniform, Poisson, and large binomial are removed from the required set; dependent failure, non-identical basketball shots, and the life/death mixture are optional extra credit and were not simulated here. The original statement about approximately 12 analysis files does not fit the revised scope.
+
+Unchanged expectations are retained: a separate analysis for each population, initial predictions, an explained sample-size search, graphical and numerical evidence, a second-seed experiment, reproducible R code, a final comparison, and a separate AI interaction record.
+
+| Analysis | Population parameters | Main issue |
+|---|---|---|
+| [Normal](analyses/01-normal.html) | Mean 0, SD 1 | Exact normal benchmark |
+| [Fair die](analyses/02-six-sided-die.html) | Integers 1–6, equally likely | Symmetric but discrete |
+| [Exponential](analyses/03-exponential.html) | Rate 1 | Persistent right skew |
+| [Small binomial](analyses/04-binomial-small.html) | Size 5, p = 0.10 | Skew and discrete jumps |
+| [Cauchy](analyses/05-cauchy.html) | Location 0, scale 1 | No finite mean or variance |
+
+## Simulation and interpretation
+
+For every configuration, B=30,000 independent samples are generated and each contains n observations. The code resets the seed to 5533 immediately before each primary experiment. Independent observations within a sample and independent repetitions are simulated in all five cases. Larger B reduces Monte Carlo uncertainty; larger n changes the distribution of the mean. These roles are not interchangeable.
+
+For finite-variance populations, the initial n grid is 1, 2, 3, 5, 10, 20, 30, 50, 75, 100, 150, 200. All integers up to the first coarse passing value plus four are then evaluated, extending if needed. Cauchy uses n=1, 2, 5, 10, 30, 100, 300, 1000.
+
+The numerical rule requires absolute skewness ≤0.30, absolute **excess** kurtosis ≤0.50, maximum CDF distance from the theoretical normal ≤0.05, and relative empirical-SE error ≤5%. The first n beginning **five consecutive passing integers** is the candidate. The histograms and Q–Q plots support using it for central shape and moderate global probability accuracy, with remaining tail and discreteness limitations explicitly discussed. These are practical tolerances rather than significance tests. A complete definition appears in each analysis.
+
+## Final comparison table
+
+```{r}
+#| echo: false
+#| results: asis
+summary_table()
+```
+
+“Not applicable” in the Cauchy row is intentional: there are no finite theoretical moments or SE to compare. Its empirical finite-run diagnostics are reported separately in the Cauchy analysis. “Selected n” means the primary run's smallest tested beginning of a five-pass sequence, followed by graphical review.
+
+| Population | Interpretation of the evidence |
+|---|---|
+| Normal | Already normal at n=1; simulation diagnostics fluctuate around their exact values. |
+| Die | Symmetry helps, but low-n averages remain visibly discrete. The selected n=6 is close to the CDF tolerance boundary. |
+| Exponential | n=30 retains too much skew under this criterion. The exact threshold varies with Monte Carlo sampling. |
+| Binomial | Small skewness alone is insufficient: discrete CDF jumps delay acceptance under the uncorrected CDF criterion. |
+| Cauchy | The mean retains the same Cauchy distribution at every n; its IQR remains about 2. |
+
+## Does n = 30 work?
+
+```{r}
+#| echo: false
+#| results: asis
+at30 <- do.call(rbind, lapply(experiments$primary, function(r) row_at(r, 30)))
+show_table(at30[at30$population != "cauchy", c("population","n","skewness","excess_kurtosis","cdf_distance","pass")])
+```
+
+Normal and die pass at 30. Exponential fails because of residual skewness. Small binomial fails the CDF discrepancy criterion even though its skewness is below 0.30. Cauchy does not satisfy the finite-variance premise at all. Thus neither “30 is always necessary” nor “30 is always sufficient” is supported.
+
+## Why convergence differs
+
+Normal sample means are exactly normal. For the die, population symmetry removes skewness from the outset, while averaging smooths a bounded lattice distribution. Exponential means have theoretical skewness $2/\sqrt n$, so noticeable asymmetry can remain at moderately large n. Binomial means also have decreasing skewness, but probability jumps remain visible to an uncorrected CDF comparison. Under this combined rule, binomial selects the largest finite n; under a skewness-only rule the ranking could change.
+
+Cauchy is qualitatively different. Its average has exactly the original Cauchy distribution, so no increase in n produces concentration around a finite mean. A symmetric central histogram is not sufficient evidence for the ordinary CLT.
+
+## Reproducibility and uncertainty
+
+The second-seed exponential experiment repeats the full selection procedure using 5534. It selects **`r experiments$alternate$chosen`**, versus **`r result_for("exponential")$chosen`** with 5533. Both reject n=30 under the same criteria. The exact selected integer changes; the conclusion about slow improvement of a finite-variance right-skewed population does not.
+
+For a normal distribution, the rough Monte Carlo standard errors of skewness and excess kurtosis at B=30,000 are $\sqrt{6/B}\approx0.0141$ and $\sqrt{24/B}\approx0.0283$. These are reference scales, not exact uncertainty formulas for every population. Near a tolerance boundary, small diagnostic changes can move the selected n substantially. The five-pass rule cannot eliminate this issue, especially with correlated configurations from reusing a seed.
+
+The die's CDF discrepancy at n=6 is `r fmt(row_at(result_for("die"),6)$cdf_distance,6)`, barely below 0.05. This is a borderline practical selection, not a robust guarantee. More repetitions, additional prespecified seeds, or stricter tolerances would be appropriate for a high-accuracy application. The finite search and diagnostic thresholds also do not promise accuracy for extreme-tail probabilities.
+
+## CLT assumptions and limits
+
+The ordinary iid CLT applies to the four finite-variance populations in this project: observations are independent, identically distributed, and have finite variance. Its standard-error prediction is $\sigma/\sqrt n$. The simulations compare this prediction with the SD of the generated sample means.
+
+Cauchy violates the finite-variance requirement. Dependence and non-identical distributions were removed from the required simulations by the update, so no empirical conclusions about those optional processes are claimed. In general, dependence adds covariance terms to the variance of a mean, while non-identical observations may require a generalized CLT and a different variance calculation. They cannot automatically inherit the ordinary iid formula.
+
+## Reproduce and inspect
+
+From the repository root:
+
+```bash
+Rscript run_simulations.R
+Rscript validate.R
+quarto render
+```
+
+The simulations use base R. Quarto rendering requires the R packages `knitr` and `rmarkdown`. CSV results, the RDS object containing simulated means, plots, session information, and validation output are included. Open `reports/index.html` for the rendered summary. See `README.md` for setup and `AI_USAGE.md` for the actual interaction record.
+
+## Course sources
+
+- Greg Labmeier, *CLT Project 1: What I Am Looking For*, `clt_project_1_student_guidance.qmd` (revised guidance supplied with the assignment).
+- *Project 1: How Fast Does Normal Happen?*, `Math167R - Class 06 project_1_clt_monte_carlo.html` (original instructions; used only where not superseded).
+- Canvas Project 1 screenshot supplied by the student: GitHub URL submission, October 5 at 18:00, 10 points.

@@ -1,0 +1,26 @@
+project:
+  type: default
+  output-dir: reports
+  execute-dir: project
+  resources:
+    - R/*.R
+  render:
+    - index.qmd
+    - analyses/*.qmd
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    embed-resources: false
+    css: styles.css
+    fig-cap-location: bottom
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: false
+lang: en

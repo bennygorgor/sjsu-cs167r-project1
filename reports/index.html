@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>How Fast Does Normal Happen?</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-c2e55264ed47ce3b2e0326a2269f9400.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#executive-summary" id="toc-executive-summary" class="nav-link active" data-scroll-target="#executive-summary"><span class="header-section-number">1</span> Executive summary</a></li>
+  <li><a href="#scope-and-source-precedence" id="toc-scope-and-source-precedence" class="nav-link" data-scroll-target="#scope-and-source-precedence"><span class="header-section-number">2</span> Scope and source precedence</a></li>
+  <li><a href="#simulation-and-interpretation" id="toc-simulation-and-interpretation" class="nav-link" data-scroll-target="#simulation-and-interpretation"><span class="header-section-number">3</span> Simulation and interpretation</a></li>
+  <li><a href="#final-comparison-table" id="toc-final-comparison-table" class="nav-link" data-scroll-target="#final-comparison-table"><span class="header-section-number">4</span> Final comparison table</a></li>
+  <li><a href="#does-n-30-work" id="toc-does-n-30-work" class="nav-link" data-scroll-target="#does-n-30-work"><span class="header-section-number">5</span> Does n = 30 work?</a></li>
+  <li><a href="#why-convergence-differs" id="toc-why-convergence-differs" class="nav-link" data-scroll-target="#why-convergence-differs"><span class="header-section-number">6</span> Why convergence differs</a></li>
+  <li><a href="#reproducibility-and-uncertainty" id="toc-reproducibility-and-uncertainty" class="nav-link" data-scroll-target="#reproducibility-and-uncertainty"><span class="header-section-number">7</span> Reproducibility and uncertainty</a></li>
+  <li><a href="#clt-assumptions-and-limits" id="toc-clt-assumptions-and-limits" class="nav-link" data-scroll-target="#clt-assumptions-and-limits"><span class="header-section-number">8</span> CLT assumptions and limits</a></li>
+  <li><a href="#reproduce-and-inspect" id="toc-reproduce-and-inspect" class="nav-link" data-scroll-target="#reproduce-and-inspect"><span class="header-section-number">9</span> Reproduce and inspect</a></li>
+  <li><a href="#course-sources" id="toc-course-sources" class="nav-link" data-scroll-target="#course-sources"><span class="header-section-number">10</span> Course sources</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">How Fast Does Normal Happen?</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="subtitle lead">Five populations, 30,000 repetitions per experiment, and a test of the n = 30 rule</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="executive-summary" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="executive-summary"><span class="header-section-number">1</span> Executive summary</h2>
+<p>This investigation uses R Monte Carlo simulations to examine <strong>the sampling distribution of the sample mean</strong>, rather than whether the original population becomes normal. Under the declared approximation criteria and primary seed 5533, the selected sample sizes are <strong>1 for the normal population, 6 for the die, 51 for the exponential population, and 63 for Binomial(5, 0.10)</strong>. <strong>No n works for the standard Cauchy mean.</strong></p>
+<p>These are empirical, criterion-dependent selections, not universal mathematical cutoffs. In particular, the alternate-seed exponential run selects 39 instead of 51. The robust conclusion is that the population’s shape, discreteness, tail behavior, and the accuracy one needs all matter; <strong>30 is not a universal threshold</strong>.</p>
+</section>
+<section id="scope-and-source-precedence" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="scope-and-source-precedence"><span class="header-section-number">2</span> Scope and source precedence</h2>
+<p>The revised <em>CLT Project 1: What I Am Looking For</em> guidance supersedes the original Class 06 project instructions wherever they differ. This report covers the five retained populations. Continuous uniform, Poisson, and large binomial are removed from the required set; dependent failure, non-identical basketball shots, and the life/death mixture are optional extra credit and were not simulated here. The original statement about approximately 12 analysis files does not fit the revised scope.</p>
+<p>Unchanged expectations are retained: a separate analysis for each population, initial predictions, an explained sample-size search, graphical and numerical evidence, a second-seed experiment, reproducible R code, a final comparison, and a separate AI interaction record.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Analysis</th>
+<th>Population parameters</th>
+<th>Main issue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="analyses/01-normal.html">Normal</a></td>
+<td>Mean 0, SD 1</td>
+<td>Exact normal benchmark</td>
+</tr>
+<tr class="even">
+<td><a href="analyses/02-six-sided-die.html">Fair die</a></td>
+<td>Integers 1–6, equally likely</td>
+<td>Symmetric but discrete</td>
+</tr>
+<tr class="odd">
+<td><a href="analyses/03-exponential.html">Exponential</a></td>
+<td>Rate 1</td>
+<td>Persistent right skew</td>
+</tr>
+<tr class="even">
+<td><a href="analyses/04-binomial-small.html">Small binomial</a></td>
+<td>Size 5, p = 0.10</td>
+<td>Skew and discrete jumps</td>
+</tr>
+<tr class="odd">
+<td><a href="analyses/05-cauchy.html">Cauchy</a></td>
+<td>Location 0, scale 1</td>
+<td>No finite mean or variance</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="simulation-and-interpretation" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="simulation-and-interpretation"><span class="header-section-number">3</span> Simulation and interpretation</h2>
+<p>For every configuration, B=30,000 independent samples are generated and each contains n observations. The code resets the seed to 5533 immediately before each primary experiment. Independent observations within a sample and independent repetitions are simulated in all five cases. Larger B reduces Monte Carlo uncertainty; larger n changes the distribution of the mean. These roles are not interchangeable.</p>
+<p>For finite-variance populations, the initial n grid is 1, 2, 3, 5, 10, 20, 30, 50, 75, 100, 150, 200. All integers up to the first coarse passing value plus four are then evaluated, extending if needed. Cauchy uses n=1, 2, 5, 10, 30, 100, 300, 1000.</p>
+<p>The numerical rule requires absolute skewness ≤0.30, absolute <strong>excess</strong> kurtosis ≤0.50, maximum CDF distance from the theoretical normal ≤0.05, and relative empirical-SE error ≤5%. The first n beginning <strong>five consecutive passing integers</strong> is the candidate. The histograms and Q–Q plots support using it for central shape and moderate global probability accuracy, with remaining tail and discreteness limitations explicitly discussed. These are practical tolerances rather than significance tests. A complete definition appears in each analysis.</p>
+</section>
+<section id="final-comparison-table" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="final-comparison-table"><span class="header-section-number">4</span> Final comparison table</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Population</th>
+<th style="text-align: left;">Selected n</th>
+<th style="text-align: left;">Mean</th>
+<th style="text-align: left;">Empirical SE</th>
+<th style="text-align: left;">Theoretical SE</th>
+<th style="text-align: left;">Skewness</th>
+<th style="text-align: left;">Excess kurtosis</th>
+<th style="text-align: left;">CDF distance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Standard Normal</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">-0.0071</td>
+<td style="text-align: left;">0.9949</td>
+<td style="text-align: left;">1.0000</td>
+<td style="text-align: left;">0.0239</td>
+<td style="text-align: left;">0.0199</td>
+<td style="text-align: left;">0.0073</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Six-Sided Die</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">3.5000</td>
+<td style="text-align: left;">0.7008</td>
+<td style="text-align: left;">0.6972</td>
+<td style="text-align: left;">0.0072</td>
+<td style="text-align: left;">-0.2125</td>
+<td style="text-align: left;">0.0500</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Exponential (rate 1)</td>
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">0.9993</td>
+<td style="text-align: left;">0.1398</td>
+<td style="text-align: left;">0.1400</td>
+<td style="text-align: left;">0.2958</td>
+<td style="text-align: left;">0.1967</td>
+<td style="text-align: left;">0.0210</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Binomial (size 5, p 0.10)</td>
+<td style="text-align: left;">63</td>
+<td style="text-align: left;">0.4997</td>
+<td style="text-align: left;">0.0846</td>
+<td style="text-align: left;">0.0845</td>
+<td style="text-align: left;">0.1579</td>
+<td style="text-align: left;">0.0374</td>
+<td style="text-align: left;">0.0484</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Standard Cauchy</td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">Not applicable</td>
+<td style="text-align: left;">Not applicable</td>
+<td style="text-align: left;">Not applicable</td>
+<td style="text-align: left;">Not applicable</td>
+<td style="text-align: left;">Not applicable</td>
+<td style="text-align: left;">Not applicable</td>
+</tr>
+</tbody>
+</table>
+<p>“Not applicable” in the Cauchy row is intentional: there are no finite theoretical moments or SE to compare. Its empirical finite-run diagnostics are reported separately in the Cauchy analysis. “Selected n” means the primary run’s smallest tested beginning of a five-pass sequence, followed by graphical review.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Population</th>
+<th>Interpretation of the evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Normal</td>
+<td>Already normal at n=1; simulation diagnostics fluctuate around their exact values.</td>
+</tr>
+<tr class="even">
+<td>Die</td>
+<td>Symmetry helps, but low-n averages remain visibly discrete. The selected n=6 is close to the CDF tolerance boundary.</td>
+</tr>
+<tr class="odd">
+<td>Exponential</td>
+<td>n=30 retains too much skew under this criterion. The exact threshold varies with Monte Carlo sampling.</td>
+</tr>
+<tr class="even">
+<td>Binomial</td>
+<td>Small skewness alone is insufficient: discrete CDF jumps delay acceptance under the uncorrected CDF criterion.</td>
+</tr>
+<tr class="odd">
+<td>Cauchy</td>
+<td>The mean retains the same Cauchy distribution at every n; its IQR remains about 2.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="does-n-30-work" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="does-n-30-work"><span class="header-section-number">5</span> Does n = 30 work?</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">population</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">skewness</th>
+<th style="text-align: right;">excess_kurtosis</th>
+<th style="text-align: right;">cdf_distance</th>
+<th style="text-align: left;">pass</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">normal</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0.0011</td>
+<td style="text-align: right;">-0.0131</td>
+<td style="text-align: right;">0.0069</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">die</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0.0177</td>
+<td style="text-align: right;">-0.0585</td>
+<td style="text-align: right;">0.0242</td>
+<td style="text-align: left;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">exponential</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0.3781</td>
+<td style="text-align: right;">0.2664</td>
+<td style="text-align: right;">0.0291</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">binomial</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">0.2243</td>
+<td style="text-align: right;">0.0928</td>
+<td style="text-align: right;">0.0704</td>
+<td style="text-align: left;">FALSE</td>
+</tr>
+</tbody>
+</table>
+<p>Normal and die pass at 30. Exponential fails because of residual skewness. Small binomial fails the CDF discrepancy criterion even though its skewness is below 0.30. Cauchy does not satisfy the finite-variance premise at all. Thus neither “30 is always necessary” nor “30 is always sufficient” is supported.</p>
+</section>
+<section id="why-convergence-differs" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="why-convergence-differs"><span class="header-section-number">6</span> Why convergence differs</h2>
+<p>Normal sample means are exactly normal. For the die, population symmetry removes skewness from the outset, while averaging smooths a bounded lattice distribution. Exponential means have theoretical skewness <span class="math inline">\(2/\sqrt n\)</span>, so noticeable asymmetry can remain at moderately large n.&nbsp;Binomial means also have decreasing skewness, but probability jumps remain visible to an uncorrected CDF comparison. Under this combined rule, binomial selects the largest finite n; under a skewness-only rule the ranking could change.</p>
+<p>Cauchy is qualitatively different. Its average has exactly the original Cauchy distribution, so no increase in n produces concentration around a finite mean. A symmetric central histogram is not sufficient evidence for the ordinary CLT.</p>
+</section>
+<section id="reproducibility-and-uncertainty" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="reproducibility-and-uncertainty"><span class="header-section-number">7</span> Reproducibility and uncertainty</h2>
+<p>The second-seed exponential experiment repeats the full selection procedure using 5534. It selects <strong>39</strong>, versus <strong>51</strong> with 5533. Both reject n=30 under the same criteria. The exact selected integer changes; the conclusion about slow improvement of a finite-variance right-skewed population does not.</p>
+<p>For a normal distribution, the rough Monte Carlo standard errors of skewness and excess kurtosis at B=30,000 are <span class="math inline">\(\sqrt{6/B}\approx0.0141\)</span> and <span class="math inline">\(\sqrt{24/B}\approx0.0283\)</span>. These are reference scales, not exact uncertainty formulas for every population. Near a tolerance boundary, small diagnostic changes can move the selected n substantially. The five-pass rule cannot eliminate this issue, especially with correlated configurations from reusing a seed.</p>
+<p>The die’s CDF discrepancy at n=6 is 0.049965, barely below 0.05. This is a borderline practical selection, not a robust guarantee. More repetitions, additional prespecified seeds, or stricter tolerances would be appropriate for a high-accuracy application. The finite search and diagnostic thresholds also do not promise accuracy for extreme-tail probabilities.</p>
+</section>
+<section id="clt-assumptions-and-limits" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="clt-assumptions-and-limits"><span class="header-section-number">8</span> CLT assumptions and limits</h2>
+<p>The ordinary iid CLT applies to the four finite-variance populations in this project: observations are independent, identically distributed, and have finite variance. Its standard-error prediction is <span class="math inline">\(\sigma/\sqrt n\)</span>. The simulations compare this prediction with the SD of the generated sample means.</p>
+<p>Cauchy violates the finite-variance requirement. Dependence and non-identical distributions were removed from the required simulations by the update, so no empirical conclusions about those optional processes are claimed. In general, dependence adds covariance terms to the variance of a mean, while non-identical observations may require a generalized CLT and a different variance calculation. They cannot automatically inherit the ordinary iid formula.</p>
+</section>
+<section id="reproduce-and-inspect" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="reproduce-and-inspect"><span class="header-section-number">9</span> Reproduce and inspect</h2>
+<p>From the repository root:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> run_simulations.R</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> validate.R</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The simulations use base R. Quarto rendering requires the R packages <code>knitr</code> and <code>rmarkdown</code>. CSV results, the RDS object containing simulated means, plots, session information, and validation output are included. Open <code>reports/index.html</code> for the rendered summary. See <code>README.md</code> for setup and <code>AI_USAGE.md</code> for the actual interaction record.</p>
+</section>
+<section id="course-sources" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="course-sources"><span class="header-section-number">10</span> Course sources</h2>
+<ul>
+<li>Greg Labmeier, <em>CLT Project 1: What I Am Looking For</em>, <code>clt_project_1_student_guidance.qmd</code> (revised guidance supplied with the assignment).</li>
+<li><em>Project 1: How Fast Does Normal Happen?</em>, <code>Math167R - Class 06 project_1_clt_monte_carlo.html</code> (original instructions; used only where not superseded).</li>
+<li>Canvas Project 1 screenshot supplied by the student: GitHub URL submission, October 5 at 18:00, 10 points.</li>
+</ul>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const cellDetails = window.document.querySelectorAll(".cell details.code-fold");
+        for (let i=0; i<cellDetails.length; i++) {
+          const details = cellDetails[i];
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell div.sourceCode.cell-code");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "How Fast Does Normal Happen?"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Five populations, 30,000 repetitions per experiment, and a test of the n = 30 rule"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"R/report_helpers.R"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## Executive summary</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>This investigation uses R Monte Carlo simulations to examine **the sampling distribution of the sample mean**, rather than whether the original population becomes normal. Under the declared approximation criteria and primary seed 5533, the selected sample sizes are **1 for the normal population, 6 for the die, 51 for the exponential population, and 63 for Binomial(5, 0.10)**. **No n works for the standard Cauchy mean.**</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>These are empirical, criterion-dependent selections, not universal mathematical cutoffs. In particular, the alternate-seed exponential run selects 39 instead of 51. The robust conclusion is that the population's shape, discreteness, tail behavior, and the accuracy one needs all matter; **30 is not a universal threshold**.</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Scope and source precedence</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>The revised *CLT Project 1: What I Am Looking For* guidance supersedes the original Class 06 project instructions wherever they differ. This report covers the five retained populations. Continuous uniform, Poisson, and large binomial are removed from the required set; dependent failure, non-identical basketball shots, and the life/death mixture are optional extra credit and were not simulated here. The original statement about approximately 12 analysis files does not fit the revised scope.</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>Unchanged expectations are retained: a separate analysis for each population, initial predictions, an explained sample-size search, graphical and numerical evidence, a second-seed experiment, reproducible R code, a final comparison, and a separate AI interaction record.</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Analysis <span class="pp">|</span> Population parameters <span class="pp">|</span> Main issue <span class="pp">|</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">Normal</span><span class="co">](analyses/01-normal.html)</span> <span class="pp">|</span> Mean 0, SD 1 <span class="pp">|</span> Exact normal benchmark <span class="pp">|</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">Fair die</span><span class="co">](analyses/02-six-sided-die.html)</span> <span class="pp">|</span> Integers 1–6, equally likely <span class="pp">|</span> Symmetric but discrete <span class="pp">|</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">Exponential</span><span class="co">](analyses/03-exponential.html)</span> <span class="pp">|</span> Rate 1 <span class="pp">|</span> Persistent right skew <span class="pp">|</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">Small binomial</span><span class="co">](analyses/04-binomial-small.html)</span> <span class="pp">|</span> Size 5, p = 0.10 <span class="pp">|</span> Skew and discrete jumps <span class="pp">|</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="co">[</span><span class="ot">Cauchy</span><span class="co">](analyses/05-cauchy.html)</span> <span class="pp">|</span> Location 0, scale 1 <span class="pp">|</span> No finite mean or variance <span class="pp">|</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## Simulation and interpretation</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>For every configuration, B=30,000 independent samples are generated and each contains n observations. The code resets the seed to 5533 immediately before each primary experiment. Independent observations within a sample and independent repetitions are simulated in all five cases. Larger B reduces Monte Carlo uncertainty; larger n changes the distribution of the mean. These roles are not interchangeable.</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>For finite-variance populations, the initial n grid is 1, 2, 3, 5, 10, 20, 30, 50, 75, 100, 150, 200. All integers up to the first coarse passing value plus four are then evaluated, extending if needed. Cauchy uses n=1, 2, 5, 10, 30, 100, 300, 1000.</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>The numerical rule requires absolute skewness ≤0.30, absolute **excess** kurtosis ≤0.50, maximum CDF distance from the theoretical normal ≤0.05, and relative empirical-SE error ≤5%. The first n beginning **five consecutive passing integers** is the candidate. The histograms and Q–Q plots support using it for central shape and moderate global probability accuracy, with remaining tail and discreteness limitations explicitly discussed. These are practical tolerances rather than significance tests. A complete definition appears in each analysis.</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Final comparison table</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: asis</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="fu">summary_table</span>()</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>“Not applicable” in the Cauchy row is intentional: there are no finite theoretical moments or SE to compare. Its empirical finite-run diagnostics are reported separately in the Cauchy analysis. “Selected n” means the primary run's smallest tested beginning of a five-pass sequence, followed by graphical review.</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Population <span class="pp">|</span> Interpretation of the evidence <span class="pp">|</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Normal <span class="pp">|</span> Already normal at n=1; simulation diagnostics fluctuate around their exact values. <span class="pp">|</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Die <span class="pp">|</span> Symmetry helps, but low-n averages remain visibly discrete. The selected n=6 is close to the CDF tolerance boundary. <span class="pp">|</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Exponential <span class="pp">|</span> n=30 retains too much skew under this criterion. The exact threshold varies with Monte Carlo sampling. <span class="pp">|</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Binomial <span class="pp">|</span> Small skewness alone is insufficient: discrete CDF jumps delay acceptance under the uncorrected CDF criterion. <span class="pp">|</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Cauchy <span class="pp">|</span> The mean retains the same Cauchy distribution at every n; its IQR remains about 2. <span class="pp">|</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="fu">## Does n = 30 work?</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="co">#| results: asis</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>at30 <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(experiments<span class="sc">$</span>primary, <span class="cf">function</span>(r) <span class="fu">row_at</span>(r, <span class="dv">30</span>)))</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="fu">show_table</span>(at30[at30<span class="sc">$</span>population <span class="sc">!=</span> <span class="st">"cauchy"</span>, <span class="fu">c</span>(<span class="st">"population"</span>,<span class="st">"n"</span>,<span class="st">"skewness"</span>,<span class="st">"excess_kurtosis"</span>,<span class="st">"cdf_distance"</span>,<span class="st">"pass"</span>)])</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>Normal and die pass at 30. Exponential fails because of residual skewness. Small binomial fails the CDF discrepancy criterion even though its skewness is below 0.30. Cauchy does not satisfy the finite-variance premise at all. Thus neither “30 is always necessary” nor “30 is always sufficient” is supported.</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why convergence differs</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>Normal sample means are exactly normal. For the die, population symmetry removes skewness from the outset, while averaging smooths a bounded lattice distribution. Exponential means have theoretical skewness $2/\sqrt n$, so noticeable asymmetry can remain at moderately large n. Binomial means also have decreasing skewness, but probability jumps remain visible to an uncorrected CDF comparison. Under this combined rule, binomial selects the largest finite n; under a skewness-only rule the ranking could change.</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>Cauchy is qualitatively different. Its average has exactly the original Cauchy distribution, so no increase in n produces concentration around a finite mean. A symmetric central histogram is not sufficient evidence for the ordinary CLT.</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reproducibility and uncertainty</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>The second-seed exponential experiment repeats the full selection procedure using 5534. It selects **`r experiments$alternate$chosen`**, versus **`r result_for("exponential")$chosen`** with 5533. Both reject n=30 under the same criteria. The exact selected integer changes; the conclusion about slow improvement of a finite-variance right-skewed population does not.</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>For a normal distribution, the rough Monte Carlo standard errors of skewness and excess kurtosis at B=30,000 are $\sqrt{6/B}\approx0.0141$ and $\sqrt{24/B}\approx0.0283$. These are reference scales, not exact uncertainty formulas for every population. Near a tolerance boundary, small diagnostic changes can move the selected n substantially. The five-pass rule cannot eliminate this issue, especially with correlated configurations from reusing a seed.</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>The die's CDF discrepancy at n=6 is <span class="in">`r fmt(row_at(result_for("die"),6)$cdf_distance,6)`</span>, barely below 0.05. This is a borderline practical selection, not a robust guarantee. More repetitions, additional prespecified seeds, or stricter tolerances would be appropriate for a high-accuracy application. The finite search and diagnostic thresholds also do not promise accuracy for extreme-tail probabilities.</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## CLT assumptions and limits</span></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>The ordinary iid CLT applies to the four finite-variance populations in this project: observations are independent, identically distributed, and have finite variance. Its standard-error prediction is $\sigma/\sqrt n$. The simulations compare this prediction with the SD of the generated sample means.</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>Cauchy violates the finite-variance requirement. Dependence and non-identical distributions were removed from the required simulations by the update, so no empirical conclusions about those optional processes are claimed. In general, dependence adds covariance terms to the variance of a mean, while non-identical observations may require a generalized CLT and a different variance calculation. They cannot automatically inherit the ordinary iid formula.</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reproduce and inspect</span></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>From the repository root:</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> run_simulations.R</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="ex">Rscript</span> validate.R</span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>The simulations use base R. Quarto rendering requires the R packages <span class="in">`knitr`</span> and <span class="in">`rmarkdown`</span>. CSV results, the RDS object containing simulated means, plots, session information, and validation output are included. Open <span class="in">`reports/index.html`</span> for the rendered summary. See <span class="in">`README.md`</span> for setup and <span class="in">`AI_USAGE.md`</span> for the actual interaction record.</span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a><span class="fu">## Course sources</span></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Greg Labmeier, *CLT Project 1: What I Am Looking For*, <span class="in">`clt_project_1_student_guidance.qmd`</span> (revised guidance supplied with the assignment).</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>*Project 1: How Fast Does Normal Happen?*, <span class="in">`Math167R - Class 06 project_1_clt_monte_carlo.html`</span> (original instructions; used only where not superseded).</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Canvas Project 1 screenshot supplied by the student: GitHub URL submission, October 5 at 18:00, 10 points.</span>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
